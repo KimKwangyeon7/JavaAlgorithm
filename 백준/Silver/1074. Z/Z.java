@@ -8,8 +8,7 @@ import java.util.StringTokenizer;
  * 아이디어
  * 라이브 수업에서 배운 분할 정복 사용
  * 메모리와 시간을 줄이기 위해 배열을 사용하지 않고 인덱스만 활용했고 시작하는 지점을 조정해 풀었다
- * 수업 때 배운 내용을 토대로 했지만 아직 개념에 익숙하지 않은 듯
- * 비슷한 문제 더 풀어볼 것
+ * 
  * @author 김광연
  *
  */
@@ -51,9 +50,9 @@ public class Main {
 		divArea(rs, cs, len);
 	}
 
-	static void divArea(int rs, int cs, int size) { // size가 최소 단위인 2가 될때까지 나눔
-		if (size == 2) { // 2일 때
-			for (int i = 0; i < 2; i++) { // Z 그리는 순서로 탐색
+	static void divArea(int rs, int cs, int size) {
+		if (size == 2) {
+			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 2; j++) {
 					if (i+rs == r && j+cs == c) {
 						System.out.println(cnt);
@@ -64,11 +63,12 @@ public class Main {
 			}
 		} else {
 			size = size/2;
-			// 다시 재귀 호출
+			// Z 그리는 순서로 다시 재귀 호출
 			divArea(rs, cs, size); // 1사분면
 			divArea(rs, cs+size, size); // 2사분면
 			divArea(rs+size, cs, size); // 4사분면
 			divArea(rs+size, cs+size, size); // 3사분면
 		}
 	}
+
 }
