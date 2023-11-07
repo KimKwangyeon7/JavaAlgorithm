@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
@@ -72,7 +71,7 @@ public class Main {
 		for (int i = start; i < 26; i++) {
 			if (!alpha[i]) {
 				alpha[i] = true;
-				DFS(L+1, i);
+				DFS(L+1, i+1);
 				alpha[i] = false;
 			}
 		}
