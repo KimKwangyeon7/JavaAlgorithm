@@ -65,33 +65,33 @@ public class Main {
 			pq.offer(new Nation(nation, g, s, b, 0));
 		}
 		
-		int rank = 0;
-		int eq = 0;
-		Nation past = new Nation(-1, -1, -1, -1, -1);
-		while (!pq.isEmpty()) {
-			Nation cur = pq.poll();
-			//System.out.println(cur.nation + " " + cur.same);
-			if (cur.same == 0) {
-				if (eq == 0) {
-					rank++;
-				} else {
-					rank = rank + eq + 1;
-					eq = 0;
-				}
-			} else {
+		int rank = 1;
+		int eq = 1;
+		Nation past = pq.poll();
+		if (past.nation == K) { // 등수를 알아낼 국가면
+			System.out.println(rank);
+		} else {
+			while (!pq.isEmpty()) {
+				Nation cur = pq.poll();
+
 				if (past.gold == cur.gold && past.silver == cur.silver && past.bronze == cur.bronze) {
 					eq++;
 				} else {
-					rank++;
-					eq = 0;
+					if (eq == 0) {
+						rank++;
+					} else {
+						rank += eq;
+						eq = 1;
+					}
 				}	
+				
+				//System.out.println(cur.nation + " " + cur.same + " " + eq + " " + rank);
+				if (cur.nation == K) { // 등수를 알아낼 국가면
+					System.out.println(rank);
+					break;
+				}
+				past = cur;
 			}
-			
-			if (cur.nation == K) { // 등수를 알아낼 국가면
-				System.out.println(rank);
-				break;
-			}
-			past = cur;
 		}
 	}
 
