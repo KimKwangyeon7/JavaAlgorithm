@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 /**
  * @author 김광연
  *
+ * https://myeongju00.tistory.com/30
  */
 public class Main {
 
@@ -15,7 +16,7 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
-		List<Integer> list = new ArrayList<>();
+		int ans = 0;
 		
 		int N = Integer.parseInt(br.readLine());
 		String order = "";
@@ -24,36 +25,25 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			order = st.nextToken();
 			if (order.charAt(1) == 'l') { // all인 경우
-				list.clear();
-				for (int j = 1; j <= 20; j++) {
-					list.add(j);
-				}
+				ans = (1 << 21) - 1;
 			} else if (order.charAt(0) == 'a') { // add일 때
 				num = Integer.parseInt(st.nextToken());
-				if (!list.contains(num)) {
-					list.add(num);
-				}
+				ans |= (1 << num); // 원소 추가하기
 			} else if (order.charAt(0) == 'c') { // check일 때
 				num = Integer.parseInt(st.nextToken());
-				if (list.contains(num)) {
-					sb.append(1).append("\n");
-				} else {
-					sb.append(0).append("\n");
+				if ((ans & (1 << num)) == (1 << num)) { // 해당 원소 포함하고 있으면
+					sb.append(1).append("\n"); // 1 출력
+				} else { // 없으면
+					sb.append(0).append("\n"); // 0출력
 				}
 			} else if (order.charAt(0) == 'r') { // remove일 때
 				num = Integer.parseInt(st.nextToken());
-				if (list.contains(num)) {
-					list.remove(new Integer(num));
-				}
+				ans &= ~(1 << num); // 원소 삭제하기
 			} else if (order.charAt(0) == 'e') { // empty일 때
-				list.clear();
+				ans = 0; 
 			} else if (order.charAt(0) == 't') { // toggle일 때
 				num = Integer.parseInt(st.nextToken());
-				if (list.contains(num)) {
-					list.remove(new Integer(num));
-				} else {
-					list.add(num);
-				}
+				ans ^= (1 << num); // 해당 원소가 있으면 삭제하고, 없으면 추가하기
 			}
 			//System.out.println(list.toString());
 		}
