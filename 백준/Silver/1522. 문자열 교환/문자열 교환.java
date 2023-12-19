@@ -3,8 +3,18 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 /**
- * @author kwang
- *
+ * @author 김광연
+ * BJ_1522_문자열교환_김광연
+ * 메모리 11472 kb 시간 80 ms
+ * 아이디어
+ * 슬라이딩 윈도우와 투포인터 활용한 구현 문제
+ * 처음에는 어떤 식으로 풀지 몰라서 고민했는데 슬라이딩 윈도우와 투포인터를 활용하라는 힌트를 보고 나서야 풀었음
+ * 먼저 a 개수를 구한 후 인덱스 0부터 a 개수만큼의 문자열을 확인 => b의 개수만큼이 교환해야하는 수
+ * 이때, 문자열이 원형이기 때문에 문자열의 마지막 인덱스까지 슬라이딩 윈도우의 시작인덱스로 확인하고 인덱스가 문자열의 총 길이보다 늘어날 경우를 대비해 총길이로 나눈 나머지로 확인함
+ * b의 개수를 확인하는 방법은 투포인터를 활용해서 구함
+ * 유의할 점
+ * 투포인터 활용할 때 while 조건을 left < right 로 뒀는데 이러면 둘이 같은 경우는 확인을 못하므로 따로 둘이 같은 경우까지 확인했음
+ * 슬라이딩
  */
 public class Main {
 
@@ -21,30 +31,37 @@ public class Main {
 		int min = 2147000000; // b의 최소 개수 
 		int bCnt = 0; // b 개수
 		int left = 0;
-		int right = 0;
-		for (int i = 0; i < len; i++) {
-			bCnt = 0;
-			left = i;
-			right = i + cnt - 1;
-			while (left < right) {
-				if (tmp.charAt(left%len) == 'b') {
+		int right = cnt-1;
+		if (len == 2 || cnt == 1) {
+			System.out.println(0);
+		} else {
+			while (left  < right ) {
+				if (tmp.charAt(left) == 'b') {
 					bCnt++;
 				}
-				if (tmp.charAt(right%len) == 'b') {
+				if (tmp.charAt(right) == 'b') {
 					bCnt++;
 				}
 				left++;
 				right--;
 			}
-            if (left == right) {
+			if (left == right) {
 				if (tmp.charAt(left%len) == 'b') {
 					bCnt++;
 				}
 			}
-			min = Math.min(min, bCnt);
+            min = Math.min(min, bCnt);
+			for (int i = 1; i < len; i++) {
+				if (tmp.charAt((i-1)%len) == 'b') {
+					bCnt--;
+				}
+				if (tmp.charAt((i+cnt-1)%len) == 'b') {
+					bCnt++;
+				}
+				min = Math.min(min, bCnt);
+			}
+			System.out.println(min);
 		}
-		System.out.println(min);
-		
 	}
 
 }
