@@ -1,17 +1,19 @@
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
+/**
+ * @author kwang
+ *
+ */
 public class Main {
-    public static void main(String[] args) throws IOException{
-        //입력값 처리하는 BufferedReader
+
+	public static void main(String[] args) throws Exception{
+		//입력값 처리하는 BufferedReader
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         //결과값 출력하는 BufferedWriter
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine()," ");
+        StringTokenizer st = new StringTokenizer(br.readLine());
         //N, d, k, c의 입력값 저장
         int N = Integer.parseInt(st.nextToken());
         int d = Integer.parseInt(st.nextToken());
@@ -22,10 +24,10 @@ public class Main {
         int[] sushi = new int[N];
         int count = 1;	//무료 초밥이 1개 있으므로 default Value = 1
         //회전 벨트 정보 저장
-        for(int i=0;i<N;i++)
+        for (int i = 0; i < N; i++)
             sushi[i] = Integer.parseInt(br.readLine());
         //회전하지 않았을 때 초밥 종류 구하기
-        for(int i=0;i<k;i++){
+        for (int i = 0;i < k; i++){
             int sushiId = sushi[i];
             if(eating[sushiId]==0)
                 count++;
@@ -33,18 +35,17 @@ public class Main {
         }
         int max = count;
         //(N-1)번 회전을 투 포인터를 이용하여 탐색
-        for(int i=0;i<N-1;i++){
+        for (int i = 0; i < N-1;i++){
             int s_id = sushi[i];	//처음 먹은 초밥 종류
             int e_id = sushi[i+k<N ? i+k : (i+k) % N];	//마지막 + 1번째 먹을 초밥 종류
-            if(--eating[s_id] == 0)		//처음 먹은 초밥 종류 더 이상 없을 때
+            if(--eating[s_id] == 0) { // 처음 먹은 초밥 종류 더 이상 없을 때
                 count--;
-            if(++eating[e_id] == 1)	//마지막 + 1번째 먹을 초밥이 처음 먹는 것일 때
+            }
+            if(++eating[e_id] == 1) { // 마지막 + 1번째 먹을 초밥이 처음 먹는 것일 때
                 count++;
-            max = Math.max(max, count);	//최대값 비교
+            }
+            max = Math.max(max, count);	// 최대값 비교
         }
-        bw.write(String.valueOf(max));	//최대 가지수 BufferedWriter 저장
-        bw.flush();		//결과 출력
-        bw.close();
-        br.close();
-    }
+        System.out.println(max);
+	}
 }
