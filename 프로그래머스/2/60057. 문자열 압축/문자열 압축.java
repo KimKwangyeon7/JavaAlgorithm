@@ -2,7 +2,7 @@ import java.util.HashSet;
 class Solution {
     static int min;
     public int solution(String s) {
-        int answer = 0;
+        //int answer = 0;
         int len = s.length();
         
         min = len;
@@ -17,11 +17,6 @@ class Solution {
         } else {
             for (int i = 1; i <= len/2; i++){
                 min = Math.min(min, zip(i, s));
-                // int a = zip(i, s);
-                // if (min > a){
-                //     System.out.println(i);
-                //     min = a;
-                // }
             }
         }
         
@@ -42,18 +37,7 @@ class Solution {
                 if (set.contains(tmp)){
                     flag++;
                 } else {
-                    if (flag == 1){
-                        flag = 1;
-                    }
-                    else if (flag < 10){
-                        cnt++;
-                    } else if (flag < 100){
-                        cnt += 2;
-                    } else if (flag < 1000) {
-                        cnt += 3;
-                    } else {
-                        cnt += 4;
-                    }
+                	cnt += check(flag);
                     flag = 1;
                     set = new HashSet<>();
                     set.add(tmp);
@@ -65,7 +49,13 @@ class Solution {
             }
             idx = idx + size;
         }
-        if (flag == 1){
+
+        return cnt + check(flag);
+    }
+    
+    static int check(int flag) {
+    	int cnt = 0;
+    	if (flag == 1){
             flag = 1;
         }
         else if (flag < 10){
@@ -77,6 +67,6 @@ class Solution {
         } else {
             cnt += 4;
         }
-        return cnt;
+    	return cnt;
     }
 }
