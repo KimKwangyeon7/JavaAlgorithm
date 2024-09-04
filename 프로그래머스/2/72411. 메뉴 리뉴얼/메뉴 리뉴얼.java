@@ -9,13 +9,18 @@ class Solution {
         
         pq = new PriorityQueue<>(); 
         set = new HashSet<>();
+        int len = Integer.MIN_VALUE;
         for (String o: orders){
+            len = Math.max(len, o.length());
             for (int i = 0; i < o.length(); i++){
                 set.add(o.charAt(i));
             }
         }
         
         for (int c: course){
+            if (c > len){
+                continue;
+            }
             alpha = new int[c];
             M = Integer.MIN_VALUE;
             list = new ArrayList<>();

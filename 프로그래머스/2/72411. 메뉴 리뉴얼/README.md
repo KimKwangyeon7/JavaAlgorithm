@@ -1,10 +1,10 @@
 # [level 2] 메뉴 리뉴얼 - 72411 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/72411) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/72411#qna) 
 
 ### 성능 요약
 
-메모리: 395 MB, 시간: 2527.37 ms
+메모리: 382 MB, 시간: 2929.67 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 09월 04일 14:08:56
+2024년 09월 04일 14:22:25
 
 ### 문제 설명
 
