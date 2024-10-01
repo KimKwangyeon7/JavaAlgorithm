@@ -66,15 +66,6 @@ class Solution {
         if (m.length() > newStr.length()){
             return false;
         }
-        if (m.length() == newStr.length()){
-            for (int i = 0; i < newStr.length(); i++){
-                if (newStr.charAt(i) != m.charAt(i)){
-                    return false;
-                }
-            }
-            return true;
-        }
-        int val = newStr.length() / m.length();
         for (int i = 0; i < newStr.length(); i++){
             if (newStr.charAt(i) == m.charAt(0)){
                 int flag = 0;
