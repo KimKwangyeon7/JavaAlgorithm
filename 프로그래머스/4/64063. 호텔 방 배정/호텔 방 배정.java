@@ -53,7 +53,7 @@ class Solution {
         }
         
         long res = check(map.get(x));
-        map.put(x, res);
+        map.put(x, res+1);
         return res;
     }
 }
