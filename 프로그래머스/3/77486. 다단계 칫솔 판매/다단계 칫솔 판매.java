@@ -1,32 +1,39 @@
 import java.util.*;
 class Solution {
     public int[] solution(String[] enroll, String[] referral, String[] seller, int[] amount) {
-    	int len = enroll.length;
-        int[] answer = new int[len];
-        Map<String, Integer> map = new HashMap<>();
-        
-        for (int i = 0; i < len; i++) {
-        	map.put(enroll[i], i);
+        int[] ans = new int[enroll.length];
+        Stack<String> stack1 = new Stack<>();
+        Stack<String> stack2 = new Stack<>();
+        Map<String, Integer> e = new HashMap<>();
+        Map<String, String>  r = new HashMap<>();
+        Map<String, Stack<Integer>> s = new HashMap<>();
+        for(int i=0; i<enroll.length; i++)e.put(enroll[i], i);
+        for(int i=0; i<referral.length; i++)r.put(enroll[i], referral[i]);
+        for(int i=0; i<seller.length; i++){
+            s.putIfAbsent(seller[i], new Stack<>());
+            s.get(seller[i]).add(amount[i]);
         }
-        int p = seller.length;
-        for (int i = 0; i < p; i++) {
-        	int sum = amount[i]*100;
-        	String sel = seller[i];
-        	while (true) {
-                if (sum == 0) {
-	        		break;
-	        	}
-        		String ref = referral[map.get(sel)];
-	        	if (!ref.equals("-")) { // 추천인이 있으면
-	        		answer[map.get(sel)] += sum - sum/10;
-	        		sel = ref;
-	        	} else { // 추천인이 없으면
-	        		answer[map.get(sel)] += sum - sum/10;
-	        		break;
-	        	}
-	        	sum = sum / 10;
-        	}
+
+        for(String t : seller) stack1.add(t);
+
+        int a = 0;
+        while(!stack1.isEmpty()){
+            String t = stack1.pop();
+            int amt = s.get(t).pop();
+            ans[e.get(t)] += amt * 90;
+            int ref = amt * 10;
+
+            stack2.add(r.get(t));
+            while(!stack2.isEmpty()){
+                String u = stack2.pop();
+                if(!e.containsKey(u) || ref == 0) break;
+
+                ans[e.get(u)] += (ref - ref/10);
+                ref /= 10;
+                stack2.add(r.get(u));
+            }
         }
-        return answer;
+
+        return ans;
     }
 }
