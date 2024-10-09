@@ -17,7 +17,7 @@ class Solution {
     public int solution(int[] food_times, long k) {
         int answer = 0;
         long len = food_times.length;
-        List<Dot> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         PriorityQueue<Dot> pq = new PriorityQueue<>();
         long sum = 0;
         for (int i = 0; i < len; i++){
@@ -31,7 +31,10 @@ class Solution {
         long total = len;
         long prev = 0;
         long r = -1;
-        while (cnt + (pq.peek().time - prev) * total <= k){
+        while (true){
+            if (cnt + (pq.peek().time - prev) * total > k){
+                break;
+            }
             Dot tmp = pq.poll();
             if (tmp.time == prev){
                 total--;
@@ -40,19 +43,20 @@ class Solution {
             cnt += (tmp.time-prev) * total;
             prev = tmp.time;
             total--;
+            
         }
         
         while (!pq.isEmpty()){
-            list.add(pq.poll());
+            list.add(pq.poll().idx);
         }
-        Collections.sort(list, new Comparator<Dot>() {
-            @Override
-            public int compare(Dot a, Dot b) {
-                return Integer.compare(a.idx, b.idx);
-            }
-        });
-        //Collections.sort(list);
-        answer = list.get((int)((k-cnt)%total)).idx+1;
+        // Collections.sort(list, new Comparator<Dot>() {
+        //     @Override
+        //     public int compare(Dot a, Dot b) {
+        //         return Integer.compare(a.idx, b.idx);
+        //     }
+        // });
+        Collections.sort(list);
+        answer = list.get((int)((k-cnt)%total))+1;
 
         return answer;  
         
