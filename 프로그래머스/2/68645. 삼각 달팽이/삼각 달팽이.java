@@ -1,29 +1,50 @@
 class Solution {
     public int[] solution(int n) {
         // 세 방향 존재 -> 아래, 오른쪽, 대각선(x,y 둘다 감소)
-        int x = -1; // 아래 이동은 x 좌표 감소
-        int y = 0; // 오른쪽 이동은 y 좌표 증가
+        //int x = -1; // 아래 이동은 x 좌표 감소
+       // int y = 0; // 오른쪽 이동은 y 좌표 증가
         int num = 1; // 삼각 달팽이 채우기 값
         // 삼각형
         int[][] tri = new int[n][n];
         // 삼각형의 크기 ( 1 ~ n 까지 합)
         int[] answer = new int[n*(n+1)/2]; 
         
-        for(int i = 0; i < n; i++) {
-            for(int j = i; j < n; j++) {
-                if(i % 3 == 0) { // 아래
-                    x++;
-                }
-                else if(i % 3 == 1) { // 오른쪽
-                    y++;
-                }
-                else if(i % 3 == 2) { // 대각선
-                    x--;
-                    y--;
-                }
-                tri[x][y] = num++;
+        // for(int i = 0; i < n; i++) {
+        //     for(int j = i; j < n; j++) {
+        //         if(i % 3 == 0) { // 아래
+        //             x++;
+        //         }
+        //         else if(i % 3 == 1) { // 오른쪽
+        //             y++;
+        //         }
+        //         else if(i % 3 == 2) { // 대각선
+        //             x--;
+        //             y--;
+        //         }
+        //         tri[x][y] = num++;
+        //     }
+        // }
+        int[] dx = {1, 0, -1};
+        int[] dy = {0, 1, -1};
+        int x = -1;
+        int y = 0;
+        int idx = 0;
+        for (int i = 1; i <= n*(n+1)/2; i++){
+            x += dx[idx%3];
+            y += dy[idx%3];
+            
+            if (x < 0 || x >= n || y < 0 || y >= n || tri[x][y] != 0){
+                x -= dx[idx%3];
+                y -= dy[idx%3];
+                idx++;
+                x += dx[idx%3];
+                y += dy[idx%3];       
             }
+            tri[x][y] = i;
         }
+        
+        
+        
         // 결과 배열에 담기
         int index = 0;
 		for(int i = 0; i < n; i++) {
