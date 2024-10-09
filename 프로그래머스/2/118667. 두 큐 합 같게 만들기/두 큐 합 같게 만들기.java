@@ -21,7 +21,7 @@ class Solution {
             return -1;
         } else {
             int cnt = 0;
-            while (cnt <= N*4){
+            while (cnt <= N*3){
                 if (sum1 < sum2){
                     int tmp = qu2.poll();
                     //System.out.println(tmp);
