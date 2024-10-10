@@ -55,7 +55,7 @@ class Solution {
             int mid = (left + right) / 2;
             if (nums.get(mid) < target){
                 left = mid + 1;
-            } else {
+            } else{
                 right = mid-1;
             } 
         }
