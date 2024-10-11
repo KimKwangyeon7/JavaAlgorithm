@@ -73,14 +73,8 @@ class Solution {
         String bb = b.toUpperCase();
         TreeSet<String> set = new TreeSet<>();
         if (aa.length() == bb.length()){
-            int flag = 1;
-            for (int i = 0; i < aa.length(); i++){
-                if (aa.charAt(i) != bb.charAt(i)){
-                    flag = 0;
-                    break;
-                }
-            }
-            if (flag == 1){
+            set.add(aa);
+            if (set.contains(bb)){
                 return 0;
             }
         }
