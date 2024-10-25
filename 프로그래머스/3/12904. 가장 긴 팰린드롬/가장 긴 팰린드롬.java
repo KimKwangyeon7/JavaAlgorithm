@@ -1,24 +1,34 @@
-class Solution {
-    public int solution(String s) {
+class Solution
+{
+    public int solution(String s)
+    {
+        int answer = 0;
         int len = s.length();
-        int maxLength = 1; // 최소 회문 길이는 1입니다.
-
-        for (int i = 0; i < len; i++) {
-            // 홀수 길이 회문 검사
-            maxLength = Math.max(maxLength, expandAroundCenter(s, i, i));
-
-            // 짝수 길이 회문 검사
-            maxLength = Math.max(maxLength, expandAroundCenter(s, i, i + 1));
+        for (int i = len; i >= 2; i--){
+            int start = 0;
+            int end = start+i-1;
+            
+            for (int j = end; j < len; j++){
+                int x = start;
+                int y = j;
+                int flag = 0;
+                
+                while (x <= y){
+                    if (s.charAt(x) != s.charAt(y)){
+                        flag = 1;
+                        break;   
+                    }
+                    x++;
+                    y--;
+                }
+                
+                if (flag == 1){
+                    start++;
+                    continue;
+                }
+                return i;
+            }
         }
-        
-        return maxLength;
-    }
-
-    private int expandAroundCenter(String s, int left, int right) {
-        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-            left--;
-            right++;
-        }
-        return right - left - 1; // 현재 회문의 길이 반환
+        return 1;
     }
 }
