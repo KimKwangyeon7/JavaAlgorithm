@@ -2,7 +2,6 @@ import java.util.*;
 class Solution {
     public int solution(int[][] points, int[][] routes) {
         int answer = 0;
-        int[][] board = new int[101][101];
         Queue<int[]> qu = new ArrayDeque<>();
         int[] order = new int[routes.length];
         Arrays.fill(order, 1);
