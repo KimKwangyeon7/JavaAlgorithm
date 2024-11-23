@@ -1,7 +1,7 @@
 class Solution {
     public long solution(int r1, int r2) {
         long answer = 0;
-        for (int i = r2-1; i > 0; i--){
+        for (int i = r2-1; i >= 1; i--){
             long high = (long)Math.sqrt(Math.pow(r2, 2) - Math.pow(i, 2));
             if (Math.pow(i, 2) > Math.pow(r2, 2)){
                 answer += high;
