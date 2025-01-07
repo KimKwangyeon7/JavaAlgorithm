@@ -1,70 +1,92 @@
 
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
+/**
+ * @author kwang
+ *
+ */
 public class Main {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
-		int T = 3;
-		for (int t = 0; t < T; t++) { // 테케 수만큼 반복
-			int N = Integer.parseInt(br.readLine()); // 동전 종류
-			List<int[]> coins = new ArrayList<>(); // 동전들을 담을 리스트
-			boolean[] dp = new boolean[100001]; // 금액 체크할 배열
-			int total = 0;
-			
-			for (int j = 0; j < N; j++) { // 동전 종류만큼 반복
+		for (int i = 0; i < 3; i++) {
+			int N = Integer.parseInt(br.readLine());
+			Map<Integer, Integer> map = new HashMap<>();
+			List<Integer> list = new ArrayList<>();
+			int sum = 0;
+			boolean[] dis = new boolean[100001];
+			for (int j = 0; j < N; j++) {
 				st = new StringTokenizer(br.readLine());
-				int val = Integer.parseInt(st.nextToken()); // 동전의 종류
-				int cnt = Integer.parseInt(st.nextToken()); // 동전의 개수
-				coins.add(new int[] {val, cnt});
-				total += val * cnt;
-				for (int k = 0; k <= cnt; k++) {
-					dp[val*k] = true;
-				}
+				int coin = Integer.parseInt(st.nextToken());
+				int cnt = Integer.parseInt(st.nextToken());
+				map.put(coin, cnt);
+				list.add(coin);
+				sum += coin * cnt;
 			}
+			if (sum % 2 != 0) {
+				sb.append(0).append("\n");
+				continue;
+			}
+			int target = sum / 2;
+//			if (dis[target]) {
+//				sb.append(1).append("\n");
+//				continue;
+//			}
 			
-			if ((total % 2) != 0) { // 금액의 총합이 짝수가 아니면
-				System.out.println("0");
-				continue;
-			}
-			if (dp[total/2]) { // 총합의 반이 이미 가능한 금액이면
-				System.out.println("1");
-				continue;
-			}
 			boolean flag = false;
-			for (int i = 0; i < coins.size(); i++) {
-				int val = coins.get(i)[0];
-				int cnt = coins.get(i)[1];
+			for (int k = 0; k < list.size(); k++) {
+				int val = list.get(k);
+				int cnt = map.get(val);
+				
 				if (flag) {
 					break;
 				}
-				for (int j = total/2; j >= val; j--) { // 내림차순으로
-					if (dp[j-val]) {
-						if (j == total/2) {
-							System.out.println("1");
+					
+				for (int p = target; p >= val; p--) {
+					if (dis[p-val]) {
+						if (p == target) {
+							sb.append(1).append("\n");
 							flag = true;
 							break;
 						}
-						for (int k = 1; k <= cnt; k++) {
-							if (j-val + k*val > total/2) {
+						for (int q = 1; q <= cnt; q++) {
+							int check = (p-val) + (q*val);
+							if (check > target) {
 								break;
 							}
-							dp[j-val + k*val] = true;
+							dis[check] = true; 
 						}
+					}
+				}
+				for (int w = 1; w <= cnt; w++) {
+					dis[val*w] = true;
+					if (val*w == target) {
+						sb.append(1).append("\n");
+						flag = true;
+						break;
+					}
+					if (val*w > target) {
+						break;
 					}
 				}
 			}
 			if (!flag) {
-				if (dp[total/2]) {
-					System.out.println("1");
+				if (dis[target]) {
+					sb.append(1).append("\n");
 				} else {
-					System.out.println("0");
+					sb.append(0).append("\n");
 				}
 			}
 		}
+		System.out.println(sb);
 	}
+
 }
