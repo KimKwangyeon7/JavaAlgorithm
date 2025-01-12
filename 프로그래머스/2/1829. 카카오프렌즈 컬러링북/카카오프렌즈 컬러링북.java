@@ -8,15 +8,12 @@ class Solution {
         int[] answer = { 0, 0 };
 		M = m;
         N = n;
-		// picture를 직접 수정하면 문제에서 오류를 일으킴
-		int[][] copy = picture.clone();
-		
 		boolean[][] visited = new boolean[m][n];
-		int p = copy.length;
-        int q = copy[0].length;
+		int p = picture.length;
+        int q = picture[0].length;
 		for (int i = 0; i < p; i++){
 			for (int j = 0; j < q; j++){
-				if (copy[i][j] > 0 && !visited[i][j]){
+				if (picture[i][j] > 0 && !visited[i][j]){
 					answer[0]++;
 					int size = 1;
 		
@@ -35,7 +32,7 @@ class Solution {
                             if (!isBoundary(xx, yy)){
                                 continue;
                             }
-                            if (copy[xx][yy] == copy[tmp[0]][tmp[1]] && !visited[xx][yy]){
+                            if (picture[xx][yy] == picture[tmp[0]][tmp[1]] && !visited[xx][yy]){
                                 qu.offer(new int[] {xx, yy});
                                 visited[xx][yy] = true;
                                 size++;
