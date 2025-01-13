@@ -29,67 +29,84 @@ public class Main {
 		if (redCnt == 0 || redCnt == N) {
 			System.out.println(0); 
 		} else {
-			int flag = 0;
-			char color = board[N-1];
-			int cnt = 1;
-			for (int i = N-2; i >= 0; i--) {
-				if (board[i] == color) {
-					cnt++;
-				} else {
-					break;
-				}
-			}
-			if (color == 'R') {
-				if (cnt == redCnt) {
-					flag = 1;
-					answer = 0;
-				} else if (redCnt-cnt < blueCnt) {
-					answer = redCnt - cnt;
-				} else {
-					answer = blueCnt;
-				}
-			} else {
-				if (cnt == blueCnt) {
-					flag = 1;
-					answer = 0;
-				} else if (blueCnt-cnt < redCnt) {
-					answer = blueCnt - cnt;
-				} else {
-					answer = blueCnt;
-				}
-			}
-			
-			if (flag == 1) {
-				System.out.println(answer);
-			} else {
-				color = board[0];
-				cnt = 1;
-				for (int i = 1; i < N; i++) {
-					if (board[i] == color) {
+			int cnt = 0;
+			int move = 0;
+			// 빨간색 볼 뒤로 보내기
+			for (int i = N-1; i >= 0; i--) {
+				if (board[i] == 'R') {
+					if (i == N-1) {
+						cnt++;
+					} else if (cnt+i == N-1) {
 						cnt++;
 					} else {
+						cnt++;
+						move++;
+					}
+					if (cnt == redCnt) {
+						answer = Math.min(answer, move);
 						break;
 					}
 				}
-				if (color == 'R') {
-					if (cnt == redCnt) {
-						answer = 0;
-					} else if (redCnt-cnt < blueCnt) {
-						answer = Math.min(answer, redCnt - cnt);
+			}
+			
+			// 빨간색 볼 앞으로 보내기
+			for (int i = 0; i < N; i++) {
+				if (board[i] == 'R') {
+					if (i == 0) {
+						cnt++;
+					} else if (i == cnt) {
+						cnt++;
 					} else {
-						answer = Math.min(answer, blueCnt);
+						cnt++;
+						move++;
 					}
-				} else {
-					if (cnt == blueCnt) {
-						answer = 0;
-					} else if (blueCnt-cnt < redCnt) {
-						answer = Math.min(answer, blueCnt - cnt);
-					} else {
-						answer = Math.min(answer, blueCnt);
+					if (cnt == redCnt) {
+						answer = Math.min(answer, move);
+						break;
 					}
 				}
-				System.out.println(answer);
 			}
+
+			// 파란색 볼을 뒤로 보내는 경우
+			cnt = 0;
+			move = 0;
+			for (int i = N-1; i >= 0; i--) {
+				if (board[i] == 'B') {
+					if (i == N-1) {
+						cnt++;
+					} else if (cnt+i == N-1) {
+						cnt++;
+					} else {
+						cnt++;
+						move++;
+					}
+					if (cnt == blueCnt) {
+						answer = Math.min(answer, move);
+						break;
+					}
+				}
+			}
+			
+			// 파란색 볼을 뒤로 보내는 경우
+			cnt = 0;
+			move = 0;
+			for (int i = 0; i < N; i++) {
+				if (board[i] == 'B') {
+					if (i == 0) {
+						cnt++;
+					} else if (i == cnt) {
+						cnt++;
+					} else {
+						cnt++;
+						move++;
+					}
+					if (cnt == blueCnt) {
+						answer = Math.min(answer, move);
+						break;
+					}
+				}
+			}	
+			System.out.println(answer);
 		}
 	}
 }
