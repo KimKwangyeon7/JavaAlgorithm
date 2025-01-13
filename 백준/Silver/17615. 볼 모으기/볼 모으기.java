@@ -25,53 +25,71 @@ public class Main {
 				redCnt++;
 			}
 		}
+		int blueCnt = N - redCnt;
 		if (redCnt == 0 || redCnt == N) {
 			System.out.println(0); 
 		} else {
-			int cnt = 0;
-			int move = 0;
-			// 빨간색 볼 먼저 세는 경우
-			for (int i = N-1; i >= 0; i--) {
-				if (board[i] == 'R') {
-					if (i == N-1) {
-						cnt++;
-					} else if (cnt+i == N-1) {
-						cnt++;
-					} else {
-						cnt++;
-						move++;
-					}
-					if (cnt == redCnt) {
-						answer = Math.min(answer, move);
-						break;
-					}
+			int flag = 0;
+			char color = board[N-1];
+			int cnt = 1;
+			for (int i = N-2; i >= 0; i--) {
+				if (board[i] == color) {
+					cnt++;
+				} else {
+					break;
+				}
+			}
+			if (color == 'R') {
+				if (cnt == redCnt) {
+					flag = 1;
+					answer = 0;
+				} else if (redCnt-cnt < blueCnt) {
+					answer = redCnt - cnt;
+				} else {
+					answer = blueCnt;
+				}
+			} else {
+				if (cnt == blueCnt) {
+					flag = 1;
+					answer = 0;
+				} else if (blueCnt-cnt < redCnt) {
+					answer = blueCnt - cnt;
+				} else {
+					answer = blueCnt;
 				}
 			}
 			
-			// 파란색 볼 먼저 세는 경우
-			cnt = 0;
-			move = 0;
-			int blueCnt = N - redCnt;
-			for (int i = N-1; i >= 0; i--) {
-				if (board[i] == 'B') {
-					if (i == N-1) {
-						cnt++;
-					} else if (cnt+i == N-1) {
+			if (flag == 1) {
+				System.out.println(answer);
+			} else {
+				color = board[0];
+				cnt = 1;
+				for (int i = 1; i < N; i++) {
+					if (board[i] == color) {
 						cnt++;
 					} else {
-						cnt++;
-						move++;
-					}
-					if (move >= answer) {
-						break;
-					}
-					if (cnt == blueCnt) {
-						answer = Math.min(answer, move);
 						break;
 					}
 				}
+				if (color == 'R') {
+					if (cnt == redCnt) {
+						answer = 0;
+					} else if (redCnt-cnt < blueCnt) {
+						answer = Math.min(answer, redCnt - cnt);
+					} else {
+						answer = Math.min(answer, blueCnt);
+					}
+				} else {
+					if (cnt == blueCnt) {
+						answer = 0;
+					} else if (blueCnt-cnt < redCnt) {
+						answer = Math.min(answer, blueCnt - cnt);
+					} else {
+						answer = Math.min(answer, blueCnt);
+					}
+				}
+				System.out.println(answer);
 			}
-			System.out.println(answer);
 		}
 	}
 }
