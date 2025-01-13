@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -50,6 +49,8 @@ public class Main {
 			}
 			
 			// 빨간색 볼 앞으로 보내기
+            cnt = 0;
+			move = 0;
 			for (int i = 0; i < N; i++) {
 				if (board[i] == 'R') {
 					if (i == 0) {
