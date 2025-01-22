@@ -1,11 +1,6 @@
 
-
-/**
- * @author kwang
- *
- */
 import java.util.*;
-
+import java.io.*;
 public class Main {
     static int N, M;
     static int[][] board;
@@ -13,16 +8,21 @@ public class Main {
     static int[] dy = {1, 0, -1, 0};
 
     public static void main(String[] args) throws Exception {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        M = sc.nextInt();
+    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
         board = new int[N][M];
 
         int pie = 0;
         for (int i = 0; i < N; i++) {
+        	st = new StringTokenizer(br.readLine());
             for (int j = 0; j < M; j++) {
-                board[i][j] = sc.nextInt();
-                if (board[i][j] == 1) pie++;
+                board[i][j] = Integer.parseInt(st.nextToken());
+                if (board[i][j] == 1) {
+                	pie++;
+                }
             }
         }
 
@@ -30,10 +30,8 @@ public class Main {
         while (pie > 0) {
             // 외부 공기 업데이트
             updateAir();
-
             // 치즈 녹이기
             pie = meltCheese(pie);
-
             time++;
         }
         System.out.println(time);
@@ -41,27 +39,26 @@ public class Main {
 
     private static void updateAir() {
         boolean[][] visited = new boolean[N][M];
-        Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[] {0, 0});
+        Queue<int[]> qu = new ArrayDeque<>();
+        qu.offer(new int[] {0, 0});
         visited[0][0] = true;
 
         // 외부 공기를 표시
-        while (!queue.isEmpty()) {
-            int[] cur = queue.poll();
+        while (!qu.isEmpty()) {
+            int[] tmp = qu.poll();
             for (int k = 0; k < 4; k++) {
-                int x = cur[0] + dx[k];
-                int y = cur[1] + dy[k];
+                int x = tmp[0] + dx[k];
+                int y = tmp[1] + dy[k];
                 if (isBoundary(x, y) && !visited[x][y] && board[x][y] != 1) {
                     visited[x][y] = true;
                     board[x][y] = 2; // 외부 공기 표시
-                    queue.offer(new int[] {x, y});
+                    qu.offer(new int[] {x, y});
                 }
             }
         }
     }
 
     private static int meltCheese(int pie) {
-        List<int[]> meltList = new ArrayList<>();
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 if (board[i][j] == 1) {
@@ -74,16 +71,11 @@ public class Main {
                         }
                     }
                     if (airContact >= 2) {
-                        meltList.add(new int[] {i, j});
+                        board[i][j] = 0;
+                        pie--;
                     }
                 }
             }
-        }
-
-        // 치즈 녹이기
-        for (int[] pos : meltList) {
-            board[pos[0]][pos[1]] = 0;
-            pie--;
         }
         return pie;
     }
