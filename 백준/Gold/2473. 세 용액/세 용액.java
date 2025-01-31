@@ -1,11 +1,20 @@
-import java.io.*;
-import java.util.*;
 
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.StringTokenizer;
+
+/**
+ * @author kwang
+ *
+ */
 public class Main {
-    static long[] board;
+	static long[] board;
     static long comp = Long.MAX_VALUE;
     static long[] result = new long[3];
-
+    static StringBuilder sb =  new StringBuilder();
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
@@ -47,14 +56,50 @@ public class Main {
                 long sum = Math.abs(board[i] + board[j] + board[bestIdx]);
                 if (sum < comp) {
                     comp = sum;
-                    result[0] = board[i];
-                    result[1] = board[j];
-                    result[2] = board[bestIdx];
+                    print(i, j, bestIdx);
                 }
             }
         }
 
-        Arrays.sort(result);
-        System.out.println(result[0] + " " + result[1] + " " + result[2]);
+//        Arrays.sort(result);
+//        System.out.println(result[0] + " " + result[1] + " " + result[2]);
+        System.out.println(sb);
     }
+	private static void print(int x, int y, int z) {
+		sb = new StringBuilder();
+		long[] tmp = new long[3];
+		tmp[0] = board[x];
+		tmp[1] = board[y];
+		tmp[2] = board[z];
+		Arrays.sort(tmp);
+		sb.append(tmp[0]).append(" ").append(tmp[1]).append(" ").append(tmp[2]);
+	}
+//	private static void combi(int L, int start, int N) {
+//		if (L == 3) {
+//			long sum = 0;
+//			for (int r: res) {
+//				sum += r;
+//				//System.out.print(r + " ");
+//			}
+//			//System.out.println();
+//			if (Math.abs(sum) < Math.abs(val)) {
+//				val = sum;
+//				
+//				// res 배열의 복사본을 만들어 정렬
+//		        int[] tmp = res.clone();
+//		        Arrays.sort(tmp);
+//		        
+//				sb = new StringBuilder();
+//				for (int r: tmp) {
+//					sb.append(r).append(" ");
+//				}
+//			}
+//			return;
+//		}
+//		for (int i = start; i < N; i++) {
+//			res[L] = board[i];
+//			combi(L+1, i+1, N);
+//		}
+//	}
+
 }
