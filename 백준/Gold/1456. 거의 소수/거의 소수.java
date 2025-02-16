@@ -34,21 +34,18 @@ public class Main {
         cnt = 0;
         for (int i = 2; i <= len; i++) {
         	if (visited[i]) {
-        		int idx = 2;
-        		while (true) {
-        			long tmp = (long)Math.pow(i, idx);
-        			if (tmp < A) {
-        				idx++;
-        			} else if (tmp > B) {
-        				break;
-        			} else {
-        				idx++;
+        		long tmp = (long) i * i;
+        		while (tmp <= B) {
+        			if (tmp >= A) {
         				cnt++;
-        			}
+        			} 
+                    if (tmp > B / i) { 
+                        break;
+                    }
+                    tmp *= i;
         		}
         	}
         }
         System.out.println(cnt);
 	}
-	
 }
