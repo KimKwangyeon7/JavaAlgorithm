@@ -1,6 +1,8 @@
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -9,6 +11,25 @@ import java.util.StringTokenizer;
  *
  */
 public class Main {
+	static class Dot implements Comparable<Dot>{
+		int x;
+		int y;
+		int dis;
+		
+		public Dot(int x, int y, int dis) {
+			this.x = x;
+			this.y = y;
+			this.dis = dis;
+		}
+
+		@Override
+		public int compareTo(Dot o) {
+			return Integer.compare(this.dis, o.dis);
+		}
+		
+	}
+	
+	
 		
 	static int N, ans;
 	static int[] dx = {1, 0, -1, 0};
@@ -50,19 +71,19 @@ public class Main {
 		System.out.println(sb);
 	}
 	static void bfs(int x, int y) {
-		Queue<int[]> qu = new ArrayDeque<>();
-		qu.offer(new int[] {x, y, board[x][y]});
+		PriorityQueue<Dot> qu = new PriorityQueue<>();
+		qu.offer(new Dot(x, y, board[x][y]));
 		while (!qu.isEmpty()) {
-			int[] tmp = qu.poll();
+			Dot tmp = qu.poll();
 			for (int k = 0; k < 4; k++) {
-				int xx = tmp[0]+dx[k];
-				int yy = tmp[1]+dy[k];
+				int xx = tmp.x+dx[k];
+				int yy = tmp.y+dy[k];
 				
-				if (!isBoundary(xx, yy) || minMap[xx][yy] <= tmp[2]+board[xx][yy]) {
+				if (!isBoundary(xx, yy) || minMap[xx][yy] <= tmp.dis+board[xx][yy]) {
 					continue;
 				}
-				minMap[xx][yy] = tmp[2] + board[xx][yy];
-				qu.offer(new int[] {xx, yy, tmp[2]+board[xx][yy]});
+				minMap[xx][yy] = tmp.dis + board[xx][yy];
+				qu.offer(new Dot (xx, yy, tmp.dis+board[xx][yy]));
 			}
 		}
 		
