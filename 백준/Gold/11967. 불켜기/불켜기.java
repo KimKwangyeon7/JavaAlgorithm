@@ -40,6 +40,8 @@ public class Main {
         
         Queue<int[]> qu = new ArrayDeque<>();
         visited[1][1] = true;
+        boolean[][] checked = new boolean[N+1][N+1];
+        checked[1][1] = true;
         board[1][1] = 1;
         qu.offer(new int[] {1, 1});
         int cnt = 1;
@@ -50,25 +52,33 @@ public class Main {
         	
         	//System.out.println(x + " " + y);
         	if (!list[x][y].isEmpty()) {
-        		boolean flag = false;
+        		//boolean flag = false;
     			for (int[] tmp: list[x][y]) {
     				if (board[tmp[0]][tmp[1]] != 1) {
     					board[tmp[0]][tmp[1]] = 1;
     					cnt++;
-    					flag = true;
+    					//flag = true;
+    					if (checked[tmp[0]][tmp[1]] && !visited[tmp[0]][tmp[1]]) {
+    						visited[tmp[0]][tmp[1]] = true;;
+    						qu.offer(new int[] {tmp[0], tmp[1]});
+    					}
     				}
     			}
-    			if (flag) {
-    				visited = new boolean[N+1][N+1];
-        			visited[x][y] = true;
-    			}
+//    			if (flag) {
+//    				visited = new boolean[N+1][N+1];
+//        			visited[x][y] = true;
+//    			}
     		}
         	
         	for (int k = 0; k < 4; k++) {
         		int nx = x + dx[k];
         		int ny = y + dy[k];
         		
-        		if (nx < 1 || nx > N || ny < 1 || ny > N || visited[nx][ny] || board[nx][ny] == 0) {
+        		if (nx < 1 || nx > N || ny < 1 || ny > N || visited[nx][ny]) {
+        			continue;
+        		}
+        		checked[nx][ny] = true;
+        		if (board[nx][ny] == 0) {
         			continue;
         		}
         		visited[nx][ny] = true;
