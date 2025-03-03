@@ -1,46 +1,53 @@
 import java.util.*;
+
 class Solution {
     public int solution(int[][] scores) {
-        int score1 = scores[0][0]; // 완호 근무 태도 점수 
-        int score2 = scores[0][1]; // 완호 동료 평가 점수 
-        int sum = score1 + score2; // 완호 종합 점수 
-        int cnt = 1;               // 완호 등수 
-        
-        // 근무 태도 점수 내림차순 / 동료 평가 점수 오름차순 
-        Arrays.sort(scores, (o1,o2)->{  
-           if(o1[0] != o2[0]) return o2[0] - o1[0];
-           return o1[1] - o2[1];
+        int n = scores.length;
+        int[] wanho = scores[0]; // 완호의 점수 저장
+
+        // 1. 근무 태도 점수(a) 내림차순, 동료 평가 점수(b) 오름차순 정렬
+        Arrays.sort(scores, (x, y) -> {
+            if (x[0] == y[0]) return Integer.compare(x[1], y[1]); // b 오름차순
+            return Integer.compare(y[0], x[0]); // a 내림차순
         });
-        
-        int max = scores[0][1]; // 동료 평가 점수 
-        int cur = scores[0][0]; // 근무 태도 점수
-        
-        TreeSet<Integer> ts = new TreeSet<>(); // 근무 태도 점수가 더 큰 (동료 평가 점수 모음집)
-        Set<Integer> temp = new HashSet<>(); // ts 갱신용 
-        temp.add(scores[0][1]);
-        
-        for(int i = 0; i < scores.length; i++){
-            boolean safe = true;
-            if(cur > scores[i][0]){ // 앞에 케이스 전부가 근무 태도 점수가 더 큰 상황 
-                if(max > scores[i][1]) safe = false;
-                for(int next : temp){ // ts 갱신
-                    ts.add(next);
+
+        // 2. 완호의 인센티브 가능 여부 체크
+        int maxB = 0; // 현재까지의 최댓값 (b 점수 기준)
+        List<int[]> validScores = new ArrayList<>(); // 인센티브 받을 수 있는 사람들
+
+        for (int[] score : scores) {
+            if (score[1] < maxB) { // 이전까지의 b 최댓값보다 작다면 탈락
+                if (score[0] == wanho[0] && score[1] == wanho[1]) {
+                    return -1; // 완호가 탈락하면 -1 반환
                 }
-                temp.clear();
+                continue;
             }
-            else if(cur == scores[i][0]){
-                temp.add(scores[i][1]);
-                Integer result = ts.higher(scores[i][1]); // 근무 태도 점수가 더 큰 동료 점수 모음집 서치 
-                if(result != null){
-                    safe = false;
-                }
-            }
-            max = Math.max(max, scores[i][1]); // max 항상 갱신 
-            
-            if(!safe && scores[i][0] == score1 && scores[i][1] == score2) return -1;
-            if(safe && sum < scores[i][0] + scores[i][1]) cnt++;
+            maxB = Math.max(maxB, score[1]);
+            validScores.add(score); // 유효한 점수 목록에 추가
         }
-        
-        return cnt;
+
+        // 3. 인센티브 받을 수 있는 사람들 중에서 등수 계산
+        validScores.sort((x, y) -> Integer.compare(y[0] + y[1], x[0] + x[1])); // a + b 내림차순 정렬
+
+        int rank = 1, sameRankCount = 0;
+        int prevScore = validScores.get(0)[0] + validScores.get(0)[1];
+
+        for (int i = 0; i < validScores.size(); i++) {
+            int sum = validScores.get(i)[0] + validScores.get(i)[1];
+
+            if (sum != prevScore) {
+                rank += sameRankCount; // 동점자 수만큼 등수 건너뜀
+                sameRankCount = 1;
+                prevScore = sum;
+            } else {
+                sameRankCount++;
+            }
+
+            if (validScores.get(i)[0] == wanho[0] && validScores.get(i)[1] == wanho[1]) {
+                return rank; // 완호의 등수 반환
+            }
+        }
+
+        return -1; // 정상적으로 여기까지 올 일은 없음
     }
 }
