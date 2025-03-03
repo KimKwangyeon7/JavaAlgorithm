@@ -1,63 +1,45 @@
 import java.util.*;
+
 class Solution {
+    static class TrieNode {
+        Map<Character, TrieNode> child = new HashMap<>();
+        int cnt = 1;
+    }
     public int solution(String[] words) {
-        int answer = 0;
-        Map<String, Integer> map = new HashMap<>();
-        // for (String word: words){
-        //     StringBuilder sb = new StringBuilder();
-        //     for (int i = 0; i < word.length(); i++){
-        //         sb.append(word.charAt(i));
-        //         map.put(sb.toString(), map.getOrDefault(sb.toString(), 0)+1);
-        //     }
-        // }
-        // for (String word: words){
-        //     StringBuilder sb = new StringBuilder();
-        //     for (int i = 0; i < word.length(); i++){
-        //         sb.append(word.charAt(i));
-        //         int tmp = map.get(sb.toString());
-        //         if (tmp == 1){
-        //            answer += sb.toString().length();
-        //             break;
-        //         }
-        //         if (i == word.length()-1){
-        //             answer += sb.toString().length();
-        //         }
-        //     }
-        // }
-        Arrays.sort(words);
-        int idx = 0;
-        int prev = -1;
-        for (int i = 0; i < words.length-1; i++){
-            String a = words[i];
-            String b = words[i+1];
-            idx = 0;
-            int flag = 0;
-            while (idx < a.length() && idx < b.length()){
-                if (a.charAt(idx) != b.charAt(idx)){
-                    flag = 1;
-                    if (prev > idx){
-                        answer += prev+1;
-                    } else {
-                        answer += idx+1;
-                    }
-                    prev = idx;
-                    break;
-                }
-                idx++;
-            }
-            if (flag != 1){
-                idx = Math.min(a.length(), b.length());
-                if (prev > idx){
-                    answer += prev+1;
-                } else {
-                    answer += idx;
-                }
-                prev = idx;
-            }
-            if (i == words.length-2){
-                answer += prev+1;
-            }
+        TrieNode root = new TrieNode();
+        for (String word: words){
+            insert(root, word);
         }
-        return answer;
+        int ans = 0;
+        for (String word: words){
+            ans += find(root, word);
+        }
+        return ans;
+    }
+    private static void insert(TrieNode root, String word){
+        TrieNode cur = root;
+        
+        for (int i = 0; i < word.length(); i++){
+            char c = word.charAt(i);
+            if (cur.child.containsKey(c)){
+                cur.child.get(c).cnt++;
+            } else {
+                cur.child.put(c, new TrieNode());
+            }
+            cur = cur.child.get(c);
+        }
+    }
+    private static int find(TrieNode root, String word){
+        TrieNode cur = root;
+        for (int i = 0; i < word.length(); i++){
+            char c = word.charAt(i);
+            if (cur.child.get(c).cnt == 1){
+                //System.out.println(word + " " + c + " " + (i+1));
+                return i+1;
+            }
+            cur = cur.child.get(c);
+        }
+        //System.out.println(word + " " + word.length());
+        return word.length();
     }
 }
