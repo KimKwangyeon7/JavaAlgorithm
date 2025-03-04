@@ -1,36 +1,32 @@
 import java.util.*;
 class Solution {
 
-    static int flag = 0;
-    static boolean[] visited;
-    static String[] answer;
-    static List<String> list = new ArrayList<>();
     public String[] solution(String[][] tickets) {
-        visited = new boolean[tickets.length];
-        //res = new int[N];
-        //visited[] = true;
-        //Arrays.sort(tickets);
-        dfs(0, "ICN", "ICN", tickets.length, tickets);
-        Collections.sort(list);
-        answer = list.get(0).split(" ");
-        return answer;
-    }
-    private static void dfs(int L, String prev, String order, int N, String[][] tickets){
-        if (L == N){
-            //flag = 1;
-            list.add(order);
-            return;
-        }
+        Map<String, PriorityQueue<String>> map = new HashMap<>();
         for (int i = 0; i < tickets.length; i++){
-            if (tickets[i][0].equals(prev) && !visited[i]){
-                visited[i] = true;
-                dfs(L+1, tickets[i][1], order + " " + tickets[i][1], N, tickets);
-                visited[i] = false;
-                
-                // if (flag == 1){
-                //     return;
-                // }
-            }
+            String from = tickets[i][0];
+            String to = tickets[i][1];
+            
+            map.putIfAbsent(from, new PriorityQueue<>());
+            map.get(from).offer(to);
         }
+        LinkedList<String> list = new LinkedList<>();
+        dfs("ICN", map, list);
+        
+        String[] ans = new String[list.size()];
+        for (int i = 0; i < list.size(); i++){
+            ans[i] = list.get(i);
+        }
+        return ans;
+    }
+    private static void dfs(String port, Map<String, PriorityQueue<String>> map, LinkedList<String> list){
+        PriorityQueue<String> destinations = map.get(port);
+        
+        while (destinations != null && !destinations.isEmpty()) {
+            String nextAirport = destinations.poll(); 
+            dfs(nextAirport, map, list);
+        }
+        
+        list.addFirst(port);  
     }
 }
