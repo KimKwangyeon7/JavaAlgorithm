@@ -1,34 +1,28 @@
-class Solution
-{
-    public int solution(String s)
-    {
-        int answer = 0;
-        int len = s.length();
-        for (int i = len; i >= 2; i--){
-            int start = 0;
-            int end = start+i-1;
-            
-            for (int j = end; j < len; j++){
-                int x = start;
-                int y = j;
-                int flag = 0;
-                
-                while (x <= y){
-                    if (s.charAt(x) != s.charAt(y)){
-                        flag = 1;
-                        break;   
-                    }
-                    x++;
-                    y--;
-                }
-                
-                if (flag == 1){
-                    start++;
-                    continue;
-                }
-                return i;
+class Solution {
+    public int solution(String s){
+        int N = s.length();
+        
+        boolean[][] dp = new boolean[N][N];
+        int max = 1;
+        for (int i = 0; i < N; i++){
+            dp[i][i] = true;
+        }
+
+        for (int i = 0; i < N-1; i++){
+            if (s.charAt(i) == s.charAt(i+1)){
+                dp[i][i+1] = true;
+                max = 2;
             }
         }
-        return 1;
+
+        for (int k = 3; k <= N; k++){
+            for (int i = 0; i <= N-k; i++){
+                if (dp[i+1][i+k-2] && s.charAt(i) == s.charAt(i+k-1)){
+                    dp[i][i+k-1] = true;
+                    max = k;
+                }
+            }
+        }
+        return max;
     }
 }
