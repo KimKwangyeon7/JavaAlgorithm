@@ -1,10 +1,10 @@
 # [level 3] 거스름돈 - 12907 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12907#qna) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12907?language=java) 
 
 ### 성능 요약
 
-메모리: 52.5 MB, 시간: 25.98 ms
+메모리: 54.6 MB, 시간: 12.85 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 10월 25일 19:35:24
+2025년 03월 04일 12:34:16
 
 ### 문제 설명
 

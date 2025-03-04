@@ -1,24 +1,18 @@
 import java.util.*;
 class Solution {
-    static int[] dp;
     public int solution(int n, int[] money) {
-        int answer = 0;
-        dp = new int[n+1];
-        //Arrays.sort(money);
+        int[] dp = new int[n+1];
         
-        for (int m: money){
-            dp[m]++;
-            if (m > n){
-                continue;
+        for (int coin: money){
+            for (int i = 1; i <= n-coin; i++){
+                if (dp[i] != 0){
+                    dp[i+coin] += dp[i];
+                } 
             }
-            for (int i = 1; i <= n; i++){
-                if (i > m){
-                    dp[i] += dp[i-m];
-                    dp[i] %= 1000000007;
-                }    
+            for (int i = 1; i <= n/coin; i++){
+                dp[coin*i]++;
             }
         }
-        
         return dp[n];
     }
 }
