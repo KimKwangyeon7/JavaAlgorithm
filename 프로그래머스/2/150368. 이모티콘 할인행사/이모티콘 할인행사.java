@@ -1,56 +1,48 @@
+import java.util.*;
 class Solution {
     static int[] sale = {10, 20, 30, 40};
-    static int[] res;
-    static int[] answer;
-    static int[] emo;
+    static List<int[]> cand;
     public int[] solution(int[][] users, int[] emoticons) {
-        answer = new int[2];
-        answer[0] = 0;
-        answer[1] = 0;
-        res = new int[emoticons.length];
-        emo = emoticons.clone();
-        dfs(0, emoticons.length, users);
-        return answer;
+        
+        int[] res = new int[emoticons.length];
+        cand = new ArrayList<>();
+        dfs(0, res, users, emoticons, emoticons.length);
+        Collections.sort(cand, (a, b) -> {
+            if (a[0] == b[0]){
+                return Integer.compare(b[1], a[1]);
+            }
+            return Integer.compare(b[0], a[0]);
+        });
+        return cand.get(0);
     }
-    private static void dfs(int L, int n, int[][] users){
-        if (L == n){
-            // for (int i = 0; i < res.length; i++){
-            //     System.out.print(res[i] + " ");
-            // }
-            // System.out.println();
-            check(users);
+    private static void dfs(int L, int[] res, int[][] users, int[] emoticons, int N){
+        if (L == N){
+            check(res, users, emoticons);
             return;
-        }
-        for (int i = 0; i < 4; i++){
-            res[L] = sale[i];
-            dfs(L+1, n, users);
+        }   
+        for (int k = 0; k < 4; k++){
+            res[L] = sale[k];
+            dfs(L+1, res, users, emoticons, N);
         }
     }
-    private static void check(int[][] users){
-        int len = users.length;
-        int cnt = 0;
-        int total = 0;
-        for (int i = 0; i < len; i++){
+    private static void check(int[] res, int[][] users, int[] emoticons){
+        int plus = 0;
+        int profit = 0;
+        for (int[] user: users){
+            int s = user[0];
+            int limit = user[1];
             int sum = 0;
-            for (int j = 0; j < res.length; j++){
-                if (res[j] >= users[i][0]){
-                    sum += emo[j] * (100 - res[j]) / 100;
+            for (int i = 0; i < emoticons.length; i++){
+                if (res[i] >= s){
+                    sum += emoticons[i] * (100-res[i]) / 100;
                 }
             }
-            if (sum >= users[i][1]){
-                cnt++;
+            if (sum >= limit){
+                plus++;
             } else {
-                
-                total += sum;
+                profit += sum;
             }
         }
-        if (cnt > answer[0]){
-            answer[0] = cnt;
-            answer[1] = total;
-        } else if (cnt == answer[0]){
-            if (total > answer[1]){
-                answer[1] = total;
-            }
-        }
+        cand.add(new int[] {plus, profit});
     }
 }
