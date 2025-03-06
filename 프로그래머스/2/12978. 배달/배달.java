@@ -31,6 +31,10 @@ class Solution {
         while (!pq.isEmpty()){
             Dot tmp = pq.poll();
             
+            if (dist[tmp.to] > K){
+                continue;
+            }
+            
             for (int i = 0; i < towns[tmp.to].size(); i++){
                 Dot next = towns[tmp.to].get(i);
                 if (dist[next.to] > dist[tmp.to] + next.time){
