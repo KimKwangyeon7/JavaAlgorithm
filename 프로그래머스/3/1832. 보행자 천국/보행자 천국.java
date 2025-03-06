@@ -49,39 +49,4 @@ class Solution {
         //System.out.println(dp[1][2][0]+ dp[1][2][1]);
         return answer;
     }
-    
-    
-    
-    private static void dfs(int nowX, int nowY, int prevX, int prevY, int[][] board){
-        if (nowX == M-1 && nowY == N-1){
-            answer++;
-            if (answer == MOD){
-                answer = 0;
-            }
-            return;
-        }
-        if (board[nowX][nowY] == 0){
-            // 아래로 가기
-            if (isBoundary(nowX+1, nowY)){
-                dfs(nowX+1, nowY, nowX, nowY, board);
-            }
-            // 오른쪽으로 가기
-            if (isBoundary(nowX, nowY+1)){
-                dfs(nowX, nowY+1, nowX, nowY, board);
-            }
-        } else if (board[nowX][nowY] == 2){
-            // 왼쪽에서 온 경우
-            if (prevX == nowX && isBoundary(nowX, nowY+1)){
-                dfs(nowX, nowY+1, nowX, nowY, board);
-            }
-                
-            // 위에서 온 경우
-            if (prevY == nowY && isBoundary(nowX+1, nowY)){
-                dfs(nowX+1, nowY, nowX, nowY, board);
-            }
-        } 
-    }
-    private static boolean isBoundary(int x, int y){
-        return x >= 0 && x < M && y >= 0 && y < N;
-    } 
 }
