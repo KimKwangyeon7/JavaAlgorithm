@@ -5,6 +5,7 @@ class Solution {
         long sum1 = 0L;
         long sum2 = 0L;
         int N = queue1.length;
+        int M = N + queue2.length;
         Queue<Integer> qu1 = new ArrayDeque<>();
         Queue<Integer> qu2 = new ArrayDeque<>();
         for (int i = 0; i < N; i++){
@@ -21,7 +22,7 @@ class Solution {
             return -1;
         } else {
             int cnt = 0;
-            while (cnt <= N*3){
+            while (cnt <= M*2){
                 if (sum1 < sum2){
                     int tmp = qu2.poll();
                     //System.out.println(tmp);
