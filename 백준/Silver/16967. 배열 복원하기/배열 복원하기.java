@@ -1,5 +1,4 @@
 
-
 /**
  * @author kwang
  *
@@ -35,18 +34,13 @@ public class Main {
 			for (int j = 0; j < W; j++) {
 				if ((i >= X && i <= H-1) && (j >= Y && j <= W-1)) {
 					ans[i][j] = board[i][j] - ans[i-X][j-Y];
-					sb.append(ans[i][j]);
+					sb.append(ans[i][j]).append(" ");
 				} else {
 					ans[i][j] = board[i][j];
-					sb.append(board[i][j]);
-				}
-				if (j < W-1) {
-					sb.append(" ");
+					sb.append(board[i][j]).append(" ");
 				}
 			}
-			if (i < H-1) {
-				sb.append("\n");
-			}
+			sb.append("\n");
 		} 
 		System.out.println(sb.toString().trim());
 	}
