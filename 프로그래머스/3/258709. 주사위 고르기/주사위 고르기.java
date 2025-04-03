@@ -1,3 +1,5 @@
+
+
 import java.util.*;
 
 class Solution {
@@ -6,45 +8,42 @@ class Solution {
 
     public int[] solution(int[][] dice) {
         int N = dice.length;
-        bestSet = new int[N / 2];
-        combination(new ArrayList<>(), 0, N, dice);
+        bestSet = new int[N/2];
+        comb(new ArrayList<>(), 0, N, dice);
         return bestSet;
     }
 
-    private void combination(List<Integer> selected, int start, int N, int[][] dice) {
+    private void comb(List<Integer> selected, int start, int N, int[][] dice) {
         if (selected.size() == N / 2) {
             List<Integer> other = new ArrayList<>();
             for (int i = 0; i < N; i++) {
                 if (!selected.contains(i)) other.add(i);
             }
-            double winRate = simulate(selected, other, dice);
+            double winRate = check(selected, other, dice);
             if (winRate > maxWinRate) {
                 maxWinRate = winRate;
-                for (int i = 0; i < N / 2; i++) bestSet[i] = selected.get(i) + 1;
+                for (int i = 0; i < N/2; i++) bestSet[i] = selected.get(i) + 1;
             }
             return;
         }
 
         for (int i = start; i < N; i++) {
             selected.add(i);
-            combination(selected, i + 1, N, dice);
+            comb(selected, i + 1, N, dice);
             selected.remove(selected.size() - 1);
         }
     }
 
-    private double simulate(List<Integer> A, List<Integer> B, int[][] dice) {
+    private double check(List<Integer> A, List<Integer> B, int[][] dice) {
         List<Integer> sumA = getAllSums(A, dice);
         List<Integer> sumB = getAllSums(B, dice);
 
         Collections.sort(sumB);
         int win = 0;
-        int draw = 0;
 
         for (int a : sumA) {
             int lower = lowerBound(sumB, a);   // b < a
-            int upper = upperBound(sumB, a);   // b <= a
             win += lower;
-            draw += (upper - lower);           // b == a
         }
 
         int total = sumA.size() * sumB.size();
@@ -68,22 +67,16 @@ class Solution {
         }
     }
 
-    private int upperBound(List<Integer> list, int target) {
-        int left = 0, right = list.size();
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (list.get(mid) <= target) left = mid + 1;
-            else right = mid;
-        }
-        return left;
-    }
-
     private int lowerBound(List<Integer> list, int target) {
-        int left = 0, right = list.size();
-        while (left < right) {
+        int left = 0, right = list.size()-1;
+        while (left <= right) {
             int mid = (left + right) / 2;
-            if (list.get(mid) < target) left = mid + 1;
-            else right = mid;
+            if (list.get(mid) < target) {
+            	left = mid + 1;
+            }
+            else {
+            	right = mid-1;
+            }
         }
         return left;
     }
